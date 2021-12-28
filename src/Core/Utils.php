@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\HtmlResponse;
 
 class Utils
 {
@@ -10,9 +11,8 @@ class Utils
     {
         $response = new Response;
         if (file_exists(APP_ROOT . '/src/Views/' . $path . '.php')) {
-            $viewpath = APP_ROOT . '/src/Views/' . $path . '.php';
-            $response->getBody()->write(file_get_contents($viewpath));
-            return $response->withStatus(200);
+            $viewpath = file_get_contents(APP_ROOT . '/src/Views/' . $path . '.php');
+            return new HtmlResponse($viewpath, 200);
         } else {
             $response->getBody()->write('404 - File not found');
             return $response->withStatus(404);
